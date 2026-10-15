@@ -20,7 +20,7 @@ Keep a JSON checkpoint with these fields. Null means not yet resolved; fill fiel
 | `backlog` | Artifact path, revision identity, and acceptance response reference |
 | `source_commit` | Source revision used to produce the current candidate |
 | `app` | App ID, platform, version string, version ID, build ID/number, and submission ID |
-| `testing` | Available-at UTC, readiness-at UTC, ready-question state/reference, tested build, user completion response, and feedback items |
+| `testing` | Available-at UTC, readiness-at UTC, ready-question state/reference, tested build, user completion response, last TestFlight feedback check UTC, and feedback items with source (thread message or TestFlight submission ID), build, status, and fixing build |
 | `package` | Manifest path and SHA-256 identity |
 | `submission_approval` | Exact package identity, user response reference, and time |
 | `review` | Last observed state, observed-at UTC, and approval evidence |
@@ -48,7 +48,7 @@ Choose the next action from the saved phase:
 | --- | --- |
 | Accepted backlog, development unfinished | Develop immediately |
 | CI or TestFlight not ready | Reconcile exact pipeline/build; register an external check if needed |
-| Testing before deadline | Handle incoming feedback; otherwise yield to saved readiness check |
+| Testing before deadline | Collect new TestFlight feedback and crashes, handle incoming feedback, then yield to the next feedback check or readiness check |
 | Testing due, no completion response | Retain a recovery wakeup, deliver readiness once, then disable after delivery is established |
 | Readiness already asked, no reply | Retain question and wait without duplicate prompts |
 | User finished testing, blockers resolved | Prepare package immediately |
@@ -66,7 +66,7 @@ Discover the live `schedule_task`, `list_scheduled_tasks`, and `update_scheduled
 
 Create a schedule only after a user-started checkpoint exists. Bind to the current originating thread with `bindToCurrentThread: true`. Pass a structured object, never JSON text. Use a stable creation `clientRequestId` for that cycle and wait occurrence; preserve it across retries.
 
-For testing, compute `readiness_at = available_at + 48 hours`. Use a positive interval in milliseconds equal to the remaining time until readiness. When due, first update the same owned schedule to `{"type":"interval","everyMs":300000}` and verify it remains enabled. This five-minute recovery interval stays active while question delivery is pending. If already due without an owned task, establish this recovery wakeup before sending. Then reconcile thread evidence, deliver the readiness question only if absent, save delivery evidence, and disable the owned wakeup. A crash after sending but before saving is recovered by finding the delivered question; a crash before sending retains an automatic retry. Do not silently move the testing deadline when a replacement build appears. When the user extends testing, record the new check and a new wait occurrence.
+For testing, compute `readiness_at = available_at + 48 hours`. Use a positive interval in milliseconds equal to the smaller of 12 hours and the remaining time until readiness. On each wakeup before readiness, collect TestFlight feedback, save the check time, and update the same owned schedule to the smaller of 12 hours and the remaining time. When due, first update the same owned schedule to `{"type":"interval","everyMs":300000}` and verify it remains enabled. This five-minute recovery interval stays active while question delivery is pending. If already due without an owned task, establish this recovery wakeup before sending. Then reconcile thread evidence, deliver the readiness question only if absent, save delivery evidence, and disable the owned wakeup. A crash after sending but before saving is recovered by finding the delivered question; a crash before sending retains an automatic retry. Do not silently move the testing deadline when a replacement build appears. When the user extends testing, record the new check and a new wait occurrence.
 
 For review, use `{"type":"interval","everyMs":3600000}`. For CI or build processing, use the project's existing watcher when available; otherwise schedule a suitable bounded check using the same ownership rules. One active owned continuation is sufficient for the current wait.
 

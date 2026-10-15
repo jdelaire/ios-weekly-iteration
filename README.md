@@ -24,7 +24,7 @@ One explicit invocation starts one release cycle. Installation and ordinary deve
 
 ## Workflow
 
-1. Inspect the app and propose a backlog mixing features with technical debt or performance work. Wait for your acceptance.
+1. Inspect the app and propose at least two distinct user-facing features and one separate technical debt item. Wait for your acceptance.
 2. Bump the version, implement accepted work on `main`, verify it, commit, and push through the existing TestFlight pipeline.
 3. Start 48 hours of user testing once the build is available to you. Implement feedback, then ask whether testing is complete.
 4. Prepare release metadata, video, and Instagram caption using the project's available skills.

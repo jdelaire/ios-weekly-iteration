@@ -7,6 +7,8 @@ description: Use only when the user explicitly invokes ios-weekly-iteration to r
 
 Run one existing iOS app through an approved release iteration. Advance through phases as soon as their requirements are met. Give user testing 48 hours before a readiness check. The week is an approximate cadence, not a deadline.
 
+Canonical source: [jdelaire/ios-weekly-iteration](https://github.com/jdelaire/ios-weekly-iteration), under `skills/ios-weekly-iteration/`. When asked to update this skill, update that repository and sync the installed copy. Installed skill directories may be standalone copies. Validate the package and report its repository commit and push status separately from app changes.
+
 ## Start or resume
 
 Read [continuations](references/continuations.md) before creating or resuming state. It defines durable checkpoints, exclusive ownership, scheduling, and recovery.
@@ -21,7 +23,9 @@ Explain the accepted progression once: backlog, development, testing, preparatio
 
 Inspect the actual app and recent code, accessible user feedback, crashes, and performance evidence. Establish a baseline build and relevant checks. Use source code as truth when comments disagree.
 
-Propose a focused backlog mixing user-facing features with justified technical debt or performance work. Give each item user benefit, acceptance criteria, expected effort, and meaningful verification. For performance work, identify the flow and measurement to compare.
+Every iteration must include at least two distinct user-facing features and at least one separate technical debt item. Classify each backlog item as `feature` or `technical-debt` and save that classification in the backlog artifact. Each feature must add an independently useful user capability; splitting one feature into subtasks does not satisfy the feature minimum. Reliability fixes and performance work count toward technical debt, not the feature minimum.
+
+Keep the scope practical by choosing small, shippable features and justified debt. Give each item user benefit, acceptance criteria, expected effort, and meaningful verification. For performance work, identify the flow and measurement to compare. Check the minimum mix before presenting the backlog for acceptance and whenever scope changes.
 
 Present this concrete backlog and ask for acceptance. Save the accepted revision and the user's response. Acceptance authorizes implementation, commits on `main`, and the pushes required for this cycle's TestFlight builds. A changed or expanded backlog needs the user's decision. Do not ask for another routine implementation go after acceptance.
 

@@ -46,6 +46,7 @@ Choose the next action from the saved phase:
 
 | Situation | Next action |
 | --- | --- |
+| Accepted backlog, no App Store version draft | Create the draft, then develop |
 | Accepted backlog, development unfinished | Develop immediately |
 | CI or TestFlight not ready | Reconcile exact pipeline/build; register an external check if needed |
 | Testing before deadline | Collect new TestFlight feedback and crashes, handle incoming feedback, then yield to the next feedback check or readiness check |

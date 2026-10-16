@@ -31,7 +31,7 @@ Present this concrete backlog and ask for acceptance. Save the accepted revision
 
 ## 2. Develop and deliver TestFlight
 
-Bump the release version once according to project conventions. Implement accepted items using the project's architecture and relevant skills. Write no code comments. Test meaningful app logic, verify affected user flows, and collect before/after evidence for performance work. Avoid tests that mirror implementation or check incidental presentation text.
+Bump the release version once according to project conventions. At the start of development, create the App Store Connect version draft for that version with the asc skills. First check that none exists and that no other version blocks a new one. Copy metadata from the latest released version, but not What's New. Keep its copyright and release type, and record the version ID. Whenever the project's versioned metadata changes, push it to that draft after a dry run. If an earlier version is still in review, create the draft as soon as Apple allows. Implement accepted items using the project's architecture and relevant skills. Write no code comments. Test meaningful app logic, verify affected user flows, and collect before/after evidence for performance work. Avoid tests that mirror implementation or check incidental presentation text.
 
 Commit completed changes on `main` and push each commit right away. The push to `main` is what triggers a new TestFlight build in the existing pipeline; an unpushed commit never reaches testers. Mark documentation-only commits with the project's CI skip marker when it has one. Follow CI and build processing. Use `asc-cli-usage` for command discovery, `asc-id-resolver` when IDs need resolving, and `asc-build-lifecycle` and `asc-testflight-orchestration` for processing, tester access, and testing notes.
 
@@ -53,7 +53,7 @@ Once the user confirms testing is complete, proceed directly to release preparat
 
 ## 4. Prepare the release package
 
-All App Store Connect interaction goes through asc skills. Use `asc-metadata-sync` and `asc-whats-new-writer`; apply the project's metadata conventions. Validate and preview changes before remote writes. Update affected screenshots and localizations when the actual changes require them, using relevant screenshot or metadata skills.
+All App Store Connect interaction goes through asc skills. Use `asc-metadata-sync` and `asc-whats-new-writer` on the existing version draft; apply the project's metadata conventions. Validate and preview changes before remote writes. Update affected screenshots and localizations when the actual changes require them, using relevant screenshot or metadata skills.
 
 Discover and use the release-video skill already available for this project. Follow its capture, music, render, visual verification, and caption workflow. Show the tested candidate's actual behavior. Prepare the app's Instagram caption and confirm the target account through its existing integration. If a required skill or connection is unavailable, preserve completed work and ask for the missing setup.
 

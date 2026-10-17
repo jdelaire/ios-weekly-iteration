@@ -55,7 +55,7 @@ Once the user confirms testing is complete, proceed directly to release preparat
 
 All App Store Connect interaction goes through asc skills. Use `asc-metadata-sync` and `asc-whats-new-writer` on the existing version draft; apply the project's metadata conventions. Validate and preview changes before remote writes. Update affected screenshots and localizations when the actual changes require them, using relevant screenshot or metadata skills.
 
-Discover and use the release-video skill already available for this project. Follow its capture, music, render, visual verification, and caption workflow. Show the tested candidate's actual behavior. Prepare the app's Instagram caption and confirm the target account through its existing integration. If a required skill or connection is unavailable, preserve completed work and ask for the missing setup.
+Discover and use the release-video skill already available for this project. Follow its capture, music, render, visual verification, and caption workflow. Show the tested candidate's actual behavior. Generate and verify the release video and Instagram caption during preparation, before presenting the submission package. Record the intended account and publishing route. Do not post or schedule Instagram publication during preparation. If a required generation skill is unavailable, preserve completed work and ask for the missing setup. A signed-out or unavailable publishing connection does not block asset generation, package presentation, or an authorized App Store submission; defer required sign-in until publication is due.
 
 Create a concrete package containing app/version/build IDs, source commit, change summary, test and performance evidence, metadata changes, video, caption, and configured release behavior. Save its identity as described in the reference. Commit release artifacts according to project conventions and push them right away.
 
@@ -69,9 +69,11 @@ Confirm actual submission and save the submission ID and remote state. A local s
 
 ## 6. Monitor and publish
 
-Use `asc-submission-health` to check the exact submitted version, defaulting to hourly scheduled checks. Continue until approval, a blocker requiring the user, or cancellation. Report status changes and actionable issues. Do not cancel merely because review takes time. Apply authorized technical repairs; obtain renewed submission approval when the candidate changes materially.
+Use `asc-submission-health` to check the exact submitted version, defaulting to hourly scheduled checks. Continue through approval and public release, stopping for a blocker requiring the user or cancellation. Report status changes and actionable issues. Do not cancel merely because review takes time. Apply authorized technical repairs; obtain renewed submission approval when the candidate changes materially.
 
-The Instagram trigger is approval of the target app version. Confirm the approval belongs to this cycle's submitted version, then publish the prepared video and caption once through the project's authenticated publishing route. Follow its existing manual or automatic App Store release policy. Approval can precede public availability; keep the caption accurate and do not silently release an app that requires the user's separate manual release decision.
+The Instagram trigger is public App Store release of this cycle's exact approved version. Apple review approval alone, including PENDING_DEVELOPER_RELEASE, does not permit posting. Keep the prepared video and caption ready while waiting for public availability; do not post or schedule publication early, even with revised wording. Follow the project's manual or automatic App Store release policy, and do not release an app that requires the user's separate manual release decision.
+
+Once the exact version is publicly available, save release evidence, confirm the target account through the project's authenticated publishing route, and publish the prepared video and caption once. If that connection is unavailable, preserve the package and ask for the missing sign-in or setup at this stage.
 
 Before publishing, record intent and any provider container/job ID. Afterward, verify the resulting post and save its ID or URL. After a timeout or interruption, reconcile the provider's result before retrying. If success cannot be determined, ask rather than risk a duplicate.
 

@@ -27,9 +27,9 @@ One explicit invocation starts one release cycle. Installation and ordinary deve
 1. Inspect the app and propose at least two distinct user-facing features and one separate technical debt item. Wait for your acceptance.
 2. Bump the version, implement accepted work on `main`, verify it, commit, and push through the existing TestFlight pipeline.
 3. Start 48 hours of user testing once the build is available to you. Implement feedback, then ask whether testing is complete.
-4. Prepare release metadata, video, and Instagram caption using the project's available skills.
+4. Generate and verify release metadata, video, and Instagram caption in advance using the project's available skills. Instagram sign-in does not block preparation or submission.
 5. Present the exact release package. Submit through asc only after your explicit go.
-6. Monitor the submitted version. After approval, publish the prepared Instagram video once and finish the cycle.
+6. Monitor the submitted version through approval and public App Store release. Only once that exact version is publicly available, verify Instagram sign-in, publish the prepared video once, and finish the cycle. Follow the configured manual or automatic release policy.
 
 Phases advance when ready. The week is an approximate cadence; testing or Apple review can extend it. Approval gates remain pending until answered.
 
@@ -37,7 +37,7 @@ Phases advance when ready. The week is an approximate cadence; testing or Apple 
 
 - An existing iOS repository and a working TestFlight build pipeline.
 - The asc CLI, authenticated App Store Connect access, and relevant asc skills.
-- The project's release-video skill and authenticated Instagram publishing integration.
+- The project's release-video skill, plus an authenticated Instagram publishing integration when publication is due after public App Store release.
 - A suitable Mac or the project's established CI for Xcode builds and simulator capture.
 - T3's persistent scheduler for automatic testing and review wakeups.
 

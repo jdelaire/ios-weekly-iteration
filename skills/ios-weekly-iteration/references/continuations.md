@@ -23,8 +23,8 @@ Keep a JSON checkpoint with these fields. Null means not yet resolved; fill fiel
 | `testing` | Available-at UTC, readiness-at UTC, ready-question state/reference, tested build, user completion response, last TestFlight feedback check UTC, and feedback items with source (thread message or TestFlight submission ID), build, status, and fixing build |
 | `package` | Manifest path and SHA-256 identity |
 | `submission_approval` | Exact package identity, user response reference, and time |
-| `review` | Last observed state, observed-at UTC, and approval evidence |
-| `publishing` | Account ID, video/caption paths, status, attempt identity, provider job/container IDs, and verified post ID/URL |
+| `review` | Last observed state, observed-at UTC, approval evidence, and exact-version public-release evidence |
+| `publishing` | Intended account and route, authentication status, video/caption paths, public-release trigger, status, attempt identity, provider job/container IDs, and verified post ID/URL |
 | `schedules` | Owned task IDs, purpose, creation request ID, bound thread, and returned next-run time |
 | `updated_at` | Last saved UTC timestamp |
 
@@ -53,10 +53,12 @@ Choose the next action from the saved phase:
 | Testing due, no completion response | Retain a recovery wakeup, deliver readiness once, then disable after delivery is established |
 | Readiness already asked, no reply | Retain question and wait without duplicate prompts |
 | User finished testing, blockers resolved | Prepare package immediately |
+| Assets ready, Instagram connection unavailable before public release | Record deferred sign-in; continue package presentation and authorized submission |
 | Package ready, no matching submission go | Present package and ask go |
 | Matching go saved | Validate and submit, reconciling remote state first |
 | Submitted version pending | Register or retain hourly review continuation |
-| Exact version approved | Reconcile and complete the Instagram step |
+| Exact version approved, not publicly released | Retain prepared assets; wait for public release under the configured manual or automatic policy |
+| Exact approved version publicly released | Verify release evidence and target-account authentication, then complete the Instagram step |
 | Required post verified | Disable schedules and complete cycle |
 
 Save an impending question before asking with status `pending`; after the tool or message succeeds, save status `sent` and its evidence. Keep the readiness recovery wakeup enabled until delivery is established from a successful send result or originating-thread evidence. Following interruption, reconcile that thread before sending: an existing delivered question is recorded without sending another; an undelivered pending question is sent under the retained recovery wakeup. Disable the wakeup only after establishing delivery. User replies resume the same phase and consume only the gate they actually answer.
@@ -69,7 +71,7 @@ Create a schedule only after a user-started checkpoint exists. Bind to the curre
 
 For testing, compute `readiness_at = available_at + 48 hours`. Use a positive interval in milliseconds equal to the smaller of 12 hours and the remaining time until readiness. On each wakeup before readiness, collect TestFlight feedback, save the check time, and update the same owned schedule to the smaller of 12 hours and the remaining time. When due, first update the same owned schedule to `{"type":"interval","everyMs":300000}` and verify it remains enabled. This five-minute recovery interval stays active while question delivery is pending. If already due without an owned task, establish this recovery wakeup before sending. Then reconcile thread evidence, deliver the readiness question only if absent, save delivery evidence, and disable the owned wakeup. A crash after sending but before saving is recovered by finding the delivered question; a crash before sending retains an automatic retry. Do not silently move the testing deadline when a replacement build appears. When the user extends testing, record the new check and a new wait occurrence.
 
-For review, use `{"type":"interval","everyMs":3600000}`. For CI or build processing, use the project's existing watcher when available; otherwise schedule a suitable bounded check using the same ownership rules. One active owned continuation is sufficient for the current wait.
+For review and automatic-release availability checks, use `{"type":"interval","everyMs":3600000}`. A manual-release decision remains a user gate; do not silently release the app. For CI or build processing, use the project's existing watcher when available; otherwise schedule a suitable bounded check using the same ownership rules. One active owned continuation is sufficient for the current wait.
 
 Give the task a title containing cycle ID and purpose, and use this continuation prompt with resolved values:
 
@@ -89,6 +91,6 @@ If persistent scheduling is absent or unsupported, preserve progress and explain
 
 Before submission, save intended app/version/build/package identity. After an uncertain outcome, query asc for the exact version and submission before attempting again. Continue an existing matching draft or active submission under the appropriate asc skill. A newer or different build needs fresh approval.
 
-Before Instagram publishing, save the target account, media and caption identity, attempt ID, and any provider container/job ID. Prefer provider idempotency support where available. On timeout, inspect that operation and the account's posts using the project's supported route. Save a verified matching post rather than publishing again. If absence or success cannot be established reliably, request the user's help resolving the outcome.
+Before Instagram publishing, verify public App Store availability of this cycle's exact approved version and save the release evidence. An approval without public release retains the prepared assets without posting. Confirm target-account authentication at publication time; missing sign-in earlier does not block generation or App Store submission. Save the target account, media and caption identity, attempt ID, and any provider container/job ID. Prefer provider idempotency support where available. On timeout, inspect that operation and the account's posts using the project's supported route. Save a verified matching post rather than publishing again. If absence or success cannot be established reliably, request the user's help resolving the outcome.
 
 On rejections, missing access, or changed product requirements, keep the cycle identity and completed work. Continue independent authorized preparation or diagnosis. Ask only the question blocking dependent work, and require a renewed go if a repaired release materially changes its package.

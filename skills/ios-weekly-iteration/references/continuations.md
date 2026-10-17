@@ -56,7 +56,7 @@ Choose the next action from the saved phase:
 | Assets ready, Instagram connection unavailable before public release | Record deferred sign-in; continue package presentation and authorized submission |
 | Package ready, no matching submission go | Present package and ask go |
 | Matching go saved | Validate and submit, reconciling remote state first |
-| Submitted version pending | Register or retain hourly review continuation |
+| Submitted version pending | Register or retain a review continuation every 12 hours |
 | Exact version approved, not publicly released | Retain prepared assets; wait for public release under the configured manual or automatic policy |
 | Exact approved version publicly released | Verify release evidence and target-account authentication, then complete the Instagram step |
 | Required post verified | Disable schedules and complete cycle |
@@ -71,7 +71,7 @@ Create a schedule only after a user-started checkpoint exists. Bind to the curre
 
 For testing, compute `readiness_at = available_at + 48 hours`. Use a positive interval in milliseconds equal to the smaller of 12 hours and the remaining time until readiness. On each wakeup before readiness, collect TestFlight feedback, save the check time, and update the same owned schedule to the smaller of 12 hours and the remaining time. When due, first update the same owned schedule to `{"type":"interval","everyMs":300000}` and verify it remains enabled. This five-minute recovery interval stays active while question delivery is pending. If already due without an owned task, establish this recovery wakeup before sending. Then reconcile thread evidence, deliver the readiness question only if absent, save delivery evidence, and disable the owned wakeup. A crash after sending but before saving is recovered by finding the delivered question; a crash before sending retains an automatic retry. Do not silently move the testing deadline when a replacement build appears. When the user extends testing, record the new check and a new wait occurrence.
 
-For review and automatic-release availability checks, use `{"type":"interval","everyMs":3600000}`. A manual-release decision remains a user gate; do not silently release the app. For CI or build processing, use the project's existing watcher when available; otherwise schedule a suitable bounded check using the same ownership rules. One active owned continuation is sufficient for the current wait.
+For review and automatic-release availability checks, use `{"type":"interval","everyMs":43200000}` for a 12-hour cadence. Apply a user-requested cadence change to the existing owned schedule and checkpoint; do not create a duplicate. A manual-release decision remains a user gate; do not silently release the app. For CI or build processing, use the project's existing watcher when available; otherwise schedule a suitable bounded check using the same ownership rules. One active owned continuation is sufficient for the current wait.
 
 Give the task a title containing cycle ID and purpose, and use this continuation prompt with resolved values:
 

@@ -69,7 +69,7 @@ Confirm actual submission and save the submission ID and remote state. A local s
 
 ## 6. Monitor and publish
 
-Use `asc-submission-health` to check the exact submitted version, defaulting to hourly scheduled checks. Continue through approval and public release, stopping for a blocker requiring the user or cancellation. Report status changes and actionable issues. Do not cancel merely because review takes time. Apply authorized technical repairs; obtain renewed submission approval when the candidate changes materially.
+Use `asc-submission-health` to check the exact submitted version, defaulting to scheduled checks every 12 hours. Continue through approval and public release, stopping for a blocker requiring the user or cancellation. Report status changes and actionable issues. Do not cancel merely because review takes time. Apply authorized technical repairs; obtain renewed submission approval when the candidate changes materially.
 
 The Instagram trigger is public App Store release of this cycle's exact approved version. Apple review approval alone, including PENDING_DEVELOPER_RELEASE, does not permit posting. Keep the prepared video and caption ready while waiting for public availability; do not post or schedule publication early, even with revised wording. Follow the project's manual or automatic App Store release policy, and do not release an app that requires the user's separate manual release decision.
 

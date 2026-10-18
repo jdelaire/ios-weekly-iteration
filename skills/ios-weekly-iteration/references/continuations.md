@@ -24,11 +24,13 @@ Keep a JSON checkpoint with these fields. Null means not yet resolved; fill fiel
 | `package` | Manifest path and SHA-256 identity |
 | `submission_approval` | Exact package identity, user response reference, and time |
 | `review` | Last observed state, observed-at UTC, approval evidence, and exact-version public-release evidence |
-| `publishing` | Intended account and route, authentication status, video/caption paths, public-release trigger, status, attempt identity, provider job/container IDs, and verified post ID/URL |
+| `publishing` | Intended account and route, authentication status, public-release trigger, user choice for optional feature posts, and a post list. Each entry has a stable key, release/feature kind, selected/skipped state, video/caption paths and hashes, status, attempt identity, provider job/container IDs, and verified post ID/URL |
 | `schedules` | Owned task IDs, purpose, creation request ID, bound thread, and returned next-run time |
 | `updated_at` | Last saved UTC timestamp |
 
 Derive stable package identity from a saved manifest containing exact app/version/build IDs, source revision, metadata diff or file hashes, video and caption hashes, and release behavior. A new identity invalidates prior submission approval. Preserve actual user replies as evidence or reference retrievable originating-thread messages. Never store credentials, tokens, or private key contents.
+
+Include every selected post in the package identity. For an older checkpoint with a single video and caption, preserve its release-only scope; extra files on disk do not select feature posts. Record an explicit later request to publish additional posts with its own asset identities and user evidence. A request after cycle completion uses separate durable publishing state and receipts, leaving the submitted package immutable. It is a publishing follow-up, not a new release cycle or a reason to renew or repeat the completed App Store submission.
 
 Hold exclusive mutation ownership while reading, changing, and saving state. Save JSON to a temporary file in the same directory and atomically replace the checkpoint. Check its identity before writing so another cycle cannot be overwritten.
 
@@ -59,7 +61,8 @@ Choose the next action from the saved phase:
 | Submitted version pending | Register or retain a review continuation every 12 hours |
 | Exact version approved, not publicly released | Retain prepared assets; wait for public release under the configured manual or automatic policy |
 | Exact approved version publicly released | Verify release evidence and target-account authentication, then complete the Instagram step |
-| Required post verified | Disable schedules and complete cycle |
+| Some selected posts verified, others unfinished | Preserve verified post receipts; publish or reconcile only unfinished selected posts |
+| Every remaining selected post verified, with named user-directed removals recorded | Disable schedules and complete cycle |
 
 Save an impending question before asking with status `pending`; after the tool or message succeeds, save status `sent` and its evidence. Keep the readiness recovery wakeup enabled until delivery is established from a successful send result or originating-thread evidence. Following interruption, reconcile that thread before sending: an existing delivered question is recorded without sending another; an undelivered pending question is sent under the retained recovery wakeup. Disable the wakeup only after establishing delivery. User replies resume the same phase and consume only the gate they actually answer.
 
@@ -83,7 +86,7 @@ Save and inspect returned `scheduledTaskId`, `boundThreadId`, `enabled`, and `ne
 
 Before creating a replacement or retrying an uncertain creation, list tasks in the originating project. Match cycle ID, purpose, prompt identity, and bound thread. Reuse the matching owned task; disable extra owned matches after reconciliation. Never disable unrelated tasks. Scheduler and checkpoint writes are separate operations, so save pending creation intent first and reconcile incomplete results on resume.
 
-Once a user-gate question is confirmed delivered, disable periodic checks that would repeat it. A pending, undelivered readiness question retains its recovery check. A reply resumes the workflow through the originating thread. Use an absolute deadline rather than a long running sleep. On completion or user cancellation, disable all tasks owned by the cycle and verify the returned state before recording cleanup complete. If disable fails, retain IDs for retry; terminal state still prevents queued wakeups from performing release work.
+Once a user-gate question is confirmed delivered, disable periodic checks that would repeat it. A pending, undelivered readiness question retains its recovery check. A reply resumes the workflow through the originating thread. Use an absolute deadline rather than a long running sleep. On completion or user cancellation, disable all tasks owned by the cycle and verify the returned state before recording cleanup complete. If disable fails, retain IDs for retry; terminal state still prevents queued wakeups from performing release work. A terminal checkpoint permits retrying recorded owned-schedule cleanup without resuming release or publication actions.
 
 If persistent scheduling is absent or unsupported, preserve progress and explain that automatic wakeups are unavailable in this host. Resume when the user returns. Do not install a daemon, modify a VPS, or claim an unregistered background runner is active.
 
@@ -91,6 +94,6 @@ If persistent scheduling is absent or unsupported, preserve progress and explain
 
 Before submission, save intended app/version/build/package identity. After an uncertain outcome, query asc for the exact version and submission before attempting again. Continue an existing matching draft or active submission under the appropriate asc skill. A newer or different build needs fresh approval.
 
-Before Instagram publishing, verify public App Store availability of this cycle's exact approved version and save the release evidence. An approval without public release retains the prepared assets without posting. Confirm target-account authentication at publication time; missing sign-in earlier does not block generation or App Store submission. Save the target account, media and caption identity, attempt ID, and any provider container/job ID. Prefer provider idempotency support where available. On timeout, inspect that operation and the account's posts using the project's supported route. Save a verified matching post rather than publishing again. If absence or success cannot be established reliably, request the user's help resolving the outcome.
+Before Instagram publishing, verify public App Store availability of this cycle's exact approved version and save the release evidence. An approval without public release retains all selected posts without publishing. Confirm target-account authentication at publication time; missing sign-in earlier does not block generation or App Store submission. For each selected post, save the target account, media and caption identity, attempt ID, and any provider container/job ID. Prefer provider idempotency support where available. On timeout, inspect that operation and the account's posts using the project's supported route. Save a verified matching post rather than publishing again. Preserve successful entries while reconciling unfinished ones; never restart the entire post set. If absence or success cannot be established reliably, request the user's help resolving the outcome.
 
 On rejections, missing access, or changed product requirements, keep the cycle identity and completed work. Continue independent authorized preparation or diagnosis. Ask only the question blocking dependent work, and require a renewed go if a repaired release materially changes its package.

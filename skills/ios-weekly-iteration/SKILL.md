@@ -15,6 +15,8 @@ Read [continuations](references/continuations.md) before creating or resuming st
 
 An explicit invocation by the user starts one cycle. Installation, matching project work, a timer, or this file appearing in context cannot start one. An automatic continuation can only resume a matching active cycle with recorded user-start evidence. Completed, cancelled, missing, or mismatched cycles exit without starting another.
 
+A later explicit request to publish additional prepared clips is a separate publishing follow-up. Save its user authorization, asset identities and progress separately; preserve the completed cycle and its submitted package. It does not start another release cycle or require resubmitting the app.
+
 At invocation, inspect repository instructions, the current branch and local changes, existing release automation, App Store identity, available project skills, and credentials through their supported checks. Work on `main`; create no branch or extra worktree. Preserve unrelated changes. Resolve blockers within scope; ask for decisions or access you cannot determine safely.
 
 Explain the accepted progression once: backlog, development, testing, preparation, submission, monitoring and Instagram. Thereafter continue automatically while authorized work remains. Save phase transitions and only yield for user input or external results. A user's reply resumes the saved phase without another skill invocation. A late Apple review can extend this cycle beyond a week.
@@ -57,7 +59,9 @@ All App Store Connect interaction goes through asc skills. Use `asc-metadata-syn
 
 Discover and use the release-video skill already available for this project. Follow its capture, music, render, visual verification, and caption workflow. Show the tested candidate's actual behavior. Generate and verify the release video and Instagram caption during preparation, before presenting the submission package. Record the intended account and publishing route. Do not post or schedule Instagram publication during preparation. If a required generation skill is unavailable, preserve completed work and ask for the missing setup. A signed-out or unavailable publishing connection does not block asset generation, package presentation, or an authorized App Store submission; defer required sign-in until publication is due.
 
-Create a concrete package containing app/version/build IDs, source commit, change summary, test and performance evidence, metadata changes, video, caption, and configured release behavior. Save its identity as described in the reference. Commit release artifacts according to project conventions and push them right away.
+If the project's video workflow supports feature cutdowns, offer standalone feature Reels as an optional addition to the release Reel. Honor an existing user choice; otherwise include the choice when presenting the package. Prepared clips alone do not select or authorize extra posts. Generate and verify a separate video and caption for each selected feature before the submission go. Unselected feature posts do not block the cycle.
+
+Create a concrete package containing app/version/build IDs, source commit, change summary, test and performance evidence, metadata changes, the selected Instagram post set with each video's and caption's identity, and configured release behavior. Save its identity as described in the reference. Commit release artifacts according to project conventions and push them right away.
 
 ## 5. Get the submission go
 
@@ -73,8 +77,8 @@ Use `asc-submission-health` to check the exact submitted version, defaulting to 
 
 The Instagram trigger is public App Store release of this cycle's exact approved version. Apple review approval alone, including PENDING_DEVELOPER_RELEASE, does not permit posting. Keep the prepared video and caption ready while waiting for public availability; do not post or schedule publication early, even with revised wording. Follow the project's manual or automatic App Store release policy, and do not release an app that requires the user's separate manual release decision.
 
-Once the exact version is publicly available, save release evidence, confirm the target account through the project's authenticated publishing route, and publish the prepared video and caption once. If that connection is unavailable, preserve the package and ask for the missing sign-in or setup at this stage.
+Once the exact version is publicly available, save release evidence, confirm the target account through the project's authenticated publishing route, and publish each selected video with its matching caption once. The release Reel and selected feature Reels are separate posts. If that connection is unavailable, preserve the package and ask for the missing sign-in or setup at this stage.
 
-Before publishing, record intent and any provider container/job ID. Afterward, verify the resulting post and save its ID or URL. After a timeout or interruption, reconcile the provider's result before retrying. If success cannot be determined, ask rather than risk a duplicate.
+Track intent, asset identity, any provider container/job ID, status, and verified post ID or URL separately for each selected post. After a timeout or interruption, reconcile that post's provider result before retrying, and continue only with posts still unfinished. If success cannot be determined, ask rather than risk a duplicate.
 
-When the requested work is verified, disable owned continuations, mark the cycle complete, and report the version, submission state, video, Instagram post, and any actual limitation. Stop there. Another release cycle requires another explicit user invocation.
+Record any optional posts the user explicitly removes from scope by their post keys. Complete the cycle only after every remaining selected post is verified. A verified release Reel alone does not finish a cycle that includes feature posts. Disable owned continuations, mark the cycle complete, and report the version, submission state, videos, all post URLs, and any actual limitation. Stop there. Another release cycle requires another explicit user invocation.

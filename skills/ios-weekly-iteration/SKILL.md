@@ -41,7 +41,7 @@ Identify the exact build from this source revision. Confirm it is valid and avai
 
 ## 3. User testing and feedback
 
-Send the version/build, changes to exercise, and TestFlight access details. Record when that build became available to the user. Set the readiness check to that time plus 48 hours and register the continuation described in the reference.
+Send the version/build, changes to exercise, and TestFlight access details. Record when that build became available to the user. When testing starts, rename the originating thread by prefixing `[TESTING] ` to its current title through the host's thread-rename tool (in T3 Code, `t3_thread_update` with `action: "rename"`). Read the current title first and skip the rename when it already starts with `[TESTING]`. A host without thread renaming does not block testing. Set the readiness check to that time plus 48 hours and register the continuation described in the reference.
 
 Collect TestFlight feedback throughout this window. Use `asc-cli-usage` to discover the current commands, then list this app's feedback and crash submissions newest first with testers, builds, and screenshots included. Collect at testing start, on every resume, and before the readiness question. Treat each submission ID as one feedback item. Skip IDs already recorded. Screenshot URLs expire, so view each screenshot during triage and save a local copy with the cycle evidence. Fetch crash logs for this release's builds and triage them with `asc-crash-triage`. Report new items to the user with tester, build, comment, and what the screenshot shows.
 

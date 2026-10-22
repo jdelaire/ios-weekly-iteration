@@ -28,7 +28,7 @@ One explicit invocation starts one release cycle. Installation and ordinary deve
 2. Bump the version, implement accepted work on `main`, verify it, commit, and push through the existing TestFlight pipeline.
 3. Start 48 hours of user testing once the build is available to you, and prefix the thread title with `[TESTING]`. Implement feedback, then ask whether testing is complete.
 4. Generate and verify release metadata, video, and Instagram caption in advance using the project's available skills. Standalone feature Reels are optional; record your choice and prepare each selected clip and caption before the submission go. Instagram sign-in does not block preparation or submission.
-5. Present the exact release package. Submit through asc only after your explicit go.
+5. Present the exact release package. Submit through asc only after your explicit go, then retitle the thread `[IN REVIEW] <title>`.
 6. Monitor the submitted version every 12 hours through approval and public App Store release. Only once that exact version is publicly available, verify Instagram sign-in and publish the release Reel plus any selected feature Reels, each once. Finish after every selected post is verified. Follow the configured manual or automatic release policy.
 
 Phases advance when ready. The week is an approximate cadence; testing or Apple review can extend it. Approval gates remain pending until answered.

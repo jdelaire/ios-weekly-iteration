@@ -71,6 +71,8 @@ After the go, use `asc-release-flow` for staging, dry-run, readiness validation,
 
 Confirm actual submission and save the submission ID and remote state. A local success message or a draft marked ready is insufficient. Reconcile existing remote submissions before retrying uncertain operations.
 
+Once the submission is confirmed, rename the originating thread to `[IN REVIEW] <title>`, where `<title>` is its current title without a leading `[TESTING] ` prefix. Use the same rename tool as in testing and skip the rename when the title already starts with `[IN REVIEW]`. A host without thread renaming does not block monitoring.
+
 ## 6. Monitor and publish
 
 Use `asc-submission-health` to check the exact submitted version, defaulting to scheduled checks every 12 hours. Continue through approval and public release, stopping for a blocker requiring the user or cancellation. Report status changes and actionable issues. Do not cancel merely because review takes time. Apply authorized technical repairs; obtain renewed submission approval when the candidate changes materially.
